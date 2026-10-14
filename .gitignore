@@ -1,0 +1,20 @@
+# Ambientes virtuais
+.venv/
+venv/
+env/
+
+# Cache do Python e binários
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Cache do pytest e ficheiros de cobertura
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Ferramentas e IDEs (opcional, útil para o VS Code exibido anteriormente)
+.vscode/
+.idea/
