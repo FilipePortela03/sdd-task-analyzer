@@ -241,3 +241,61 @@ def fixture_tarefa_data_sem_tz() -> List[Dict[str, Any]]:
             "status": "pendente",
         }
     ]
+
+
+@pytest.fixture
+def fixture_tarefa_prazo_anterior_criacao() -> List[Dict[str, Any]]:
+    """Retorna lista com tarefa cujo prazo é anterior à data de criação."""
+    return [
+        {
+            "id_tarefa": "T7",
+            "titulo": "Prazo Invertido",
+            "prioridade": "baixa",
+            "data_criacao": "2026-09-05T10:00:00Z",
+            "data_conclusao": None,
+            "prazo": "2026-09-01T10:00:00Z",  # Erro: prazo anterior à criação
+            "status": "pendente",
+        }
+    ]
+
+
+@pytest.fixture
+def fixture_tarefa_prazo_vazio() -> List[Dict[str, Any]]:
+    """Retorna lista com tarefa com prazo vazio para testar o retorno None do parse."""
+    return [
+        {
+            "id_tarefa": "T8",
+            "titulo": "Sem Prazo",
+            "prioridade": "baixa",
+            "data_criacao": "2026-09-01T10:00:00Z",
+            "data_conclusao": "2026-09-02T10:00:00Z",
+            "prazo": "",  # Força a passagem no 'if not data_str' da linha 138
+            "status": "concluida",
+        }
+    ]
+
+@pytest.fixture
+def fixture_tarefa_prazo_anterior_criacao() -> List[Dict[str, Any]]:
+    """Retorna lista com tarefa cujo prazo é anterior à data de criação."""
+    return [{
+        "id_tarefa": "T7_prazo",
+        "titulo": "Prazo Invertido",
+        "prioridade": "baixa",
+        "data_criacao": "2026-09-05T10:00:00Z",
+        "data_conclusao": None,
+        "prazo": "2026-09-01T10:00:00Z", # Erro: prazo anterior
+        "status": "pendente"
+    }]
+
+@pytest.fixture
+def fixture_tarefa_prazo_vazio() -> List[Dict[str, Any]]:
+    """Retorna lista com tarefa com prazo vazio para testar retorno seguro."""
+    return [{
+        "id_tarefa": "T8_prazo",
+        "titulo": "Sem Prazo",
+        "prioridade": "baixa",
+        "data_criacao": "2026-09-01T10:00:00Z",
+        "data_conclusao": "2026-09-02T10:00:00Z",
+        "prazo": "", # Força passagem na validação de string vazia
+        "status": "concluida"
+    }]
