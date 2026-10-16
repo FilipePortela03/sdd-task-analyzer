@@ -123,3 +123,13 @@ def test_analisar_tarefas_data_sem_tz_lanca_erro(fixture_tarefa_data_sem_tz):
     """Garante que datas naive (sem indicativo de timezone) lançam DataInvalidaError."""
     with pytest.raises(DataInvalidaError, match="timezone-aware"):
         analisar_tarefas(fixture_tarefa_data_sem_tz)
+def test_analisar_tarefas_prazo_anterior_criacao_lanca_erro(fixture_tarefa_prazo_anterior_criacao):
+    """Garante que prazo anterior à data de criação lança DataInvalidaError."""
+    with pytest.raises(DataInvalidaError, match="prazo é anterior à data_criacao"):
+        analisar_tarefas(fixture_tarefa_prazo_anterior_criacao)
+
+def test_analisar_tarefas_prazo_vazio_nao_quebra_execucao(fixture_tarefa_prazo_vazio):
+    """Garante que ausência de prazo não quebra cálculos matemáticos."""
+    resultado = analisar_tarefas(fixture_tarefa_prazo_vazio)
+    assert resultado["taxa_atraso_percentual"] == 0.0
+    assert resultado["quantidade_tarefas"] == 1
