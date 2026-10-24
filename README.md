@@ -2,13 +2,13 @@
 
 # 📊 SDD Task Analyzer
 
-**Módulo Python para análise de métricas de produtividade e processamento de tarefas, guiado por Spec-Driven Development.**
+**Módulo Python para análise de métricas de produtividade, orquestrado com Docker e guiado por Spec-Driven Development.**
 
 ![Python](https://img.shields.io/badge/python-3.11%2B-blue?logo=python&logoColor=white)
 ![Testes](https://img.shields.io/badge/testes-pytest-0A9EDC?logo=pytest&logoColor=white)
-![Cobertura](https://img.shields.io/badge/cobertura-98%25-brightgreen)
-![Code style](https://img.shields.io/badge/code%20style-black-000000)
-![Linter](https://img.shields.io/badge/linter-ruff-D7FF64)
+![Cobertura](https://img.shields.io/badge/cobertura-100%25-brightgreen)
+![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-2088FF?logo=github-actions&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Containerizado-2496ED?logo=docker&logoColor=white)
 
 </div>
 
@@ -19,7 +19,7 @@
 - [Visão Geral](#-visão-geral)
 - [Arquitetura do Repositório](#️-arquitetura-do-repositório)
 - [Pré-requisitos](#️-pré-requisitos)
-- [Instalação e Configuração](#-instalação-e-configuração)
+- [Instalação e Execução (Docker)](#-instalação-e-execução-docker)
 - [Testes e Cobertura](#-testes-e-cobertura-homologação-dinâmica)
 - [Qualidade Estática](#️-qualidade-estática-homologação-estática)
 - [Autor](#-autor)
@@ -30,32 +30,35 @@
 
 O **Task Analyzer** é um módulo Python desenvolvido para analisar métricas de produtividade e processamento de tarefas, seguindo estritamente as especificações do Contrato de Negócio (SDD) e as regras de governança de IA definidas em [`CONTEXT_RULES.md`](CONTEXT_RULES.md).
 
-Este projeto faz parte da avaliação da **Fase 2**, com foco em:
+Este projeto faz parte da avaliação final da **Fase 3**, consolidando:
 
-- ✅ Boas práticas de engenharia de software
-- ✅ Qualidade estática de código (Clean Code)
-- ✅ Alta cobertura de testes automatizados
+- ✅ Boas práticas de engenharia de software e Clean Code.
+- ✅ **100% de cobertura** de testes automatizados.
+- ✅ Esteira de Integração Contínua (CI/CD) via GitHub Actions.
+- ✅ Isolamento e reprodutibilidade de ambiente via Docker.
 
 ---
 
 ## 🏗️ Arquitetura do Repositório
 
-A estrutura de diretórios foi implementada exatamente conforme a arquitetura aprovada na Fase 1:
+A estrutura foi expandida para suportar DevOps e containerização:
 
 ```text
 sdd-task-analyzer/
+├── .github/workflows/
+│   └── ci.yml                # Esteira de CI/CD (GitHub Actions)
 ├── CONTEXT_RULES.md          # Regras de governança e restrições técnicas (IA)
+├── Dockerfile                # Receita de containerização (python:3.11-slim)
+├── docker-compose.yml        # Orquestração do ambiente de testes
 ├── README.md                 # Documentação principal do projeto
 ├── requirements.txt          # Dependências do projeto
-├── .gitignore                # Arquivos ignorados pelo Git (ex: __pycache__)
 ├── specs/
 │   └── task_analyzer_spec.md # Especificação executável completa (Contrato SDD)
 ├── src/
 │   ├── __init__.py           # Define 'src' como um pacote Python
 │   ├── task_analyzer.py      # Implementação principal da análise de tarefas
-│   └── exceptions.py         # Exceções customizadas (ex: DataInvalidaError)
+│   └── exceptions.py         # Exceções customizadas
 └── tests/
-    ├── __init__.py           # Define 'tests' como um pacote Python
     ├── conftest.py           # Fixtures compartilhadas para os testes
     └── test_harness.py       # Casos de teste automatizados (pytest)
 ```
@@ -64,14 +67,17 @@ sdd-task-analyzer/
 
 ## ⚙️ Pré-requisitos
 
-| Requisito | Versão    | Finalidade                       |
-|-----------|-----------|----------------------------------|
-| Python    | 3.11+     | Execução do módulo e dos testes  |
-| Git       | qualquer  | Clonagem e controle de versões   |
+| Requisito | Versão | Finalidade |
+| :--- | :--- | :--- |
+| **Git** | qualquer | Clonagem e controle de versões |
+| **Docker** | Desktop | Execução isolada eliminando falhas locais |
+| **Python** | 3.11+ | (Opcional) Execução local sem container |
 
 ---
 
-## 🚀 Instalação e Configuração
+## 🚀 Instalação e Execução (Docker)
+
+A forma recomendada de executar o projeto é através do Docker, garantindo um ambiente idêntico ao da homologação em CI/CD.
 
 **1. Clone o repositório:**
 
@@ -80,31 +86,20 @@ git clone https://github.com/FilipePortela03/sdd-task-analyzer.git
 cd sdd-task-analyzer
 ```
 
-**2. (Recomendado) Crie e ative um ambiente virtual:**
+**2. Execute a suíte de testes isolada:**
 
 ```bash
-python -m venv .venv
-
-# Linux / macOS
-source .venv/bin/activate
-
-# Windows
-.venv\Scripts\activate
-```
-
-**3. Instale as dependências:**
-
-```bash
-pip install -r requirements.txt
+docker compose build
+docker compose run test-runner
 ```
 
 ---
 
 ## 🧪 Testes e Cobertura (Homologação Dinâmica)
 
-O projeto conta com **98% de cobertura de testes**, validando com sucesso os cenários ideais e os casos de borda estipulados no contrato SDD.
+O projeto atingiu a marca de **100% de cobertura** de testes, validando com sucesso todos os **15 cenários** ideais e de borda exigidos.
 
-Para executar os testes e gerar o relatório de cobertura no terminal:
+Para executar localmente (sem Docker) e gerar o relatório no terminal:
 
 ```bash
 python -m pytest --cov=src --cov-report term-missing
@@ -114,16 +109,17 @@ python -m pytest --cov=src --cov-report term-missing
 
 ## 🛠️ Qualidade Estática (Homologação Estática)
 
-O código foi submetido a um processo de curadoria rigoroso para garantir o cumprimento das diretrizes da PEP-8 e a eliminação de importações não utilizadas.
+O código cumpre as diretrizes da **PEP-8** e passa por curadoria contínua automatizada.
 
-| Ferramenta | Objetivo                  | Comando                                |
-|------------|---------------------------|----------------------------------------|
-| **Black**  | Verificação de formatação | `python -m black --check src tests`    |
-| **Ruff**   | Análise de linting        | `python -m ruff check src tests`       |
+| Ferramenta | Comando (Ambiente Virtual Local) |
+| :--- | :--- |
+| **Black** | `python -m black --check src tests` |
+| **Ruff** | `python -m ruff check src tests` |
 
 ---
 
 ## 👤 Autor
+
 **Filipe Portela Silva**
 
-Projeto desenvolvido para homologação técnica e avaliação de arquitetura de software orientada a especificações rigorosas (*Spec-Driven Development*).
+Projeto desenvolvido para homologação técnica, governança de IA e arquitetura de software orientada a especificações rigorosas (Spec-Driven Development).
